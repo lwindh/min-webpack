@@ -31,7 +31,7 @@ function getFileDependencies(filename) {
             dependencies[node.source.value] = newFile
         }
     })
-    // 通过 @babel/core 和 @babel/preset-env 进行代码的转换
+    // 通过 @babel/core 和 @babel/preset-env 进行代码的转换 ES6 -> ES5
     const {code} = babel.transformFromAst(ast, null, {
         presets: ["@babel/preset-env"]
     })
@@ -41,4 +41,33 @@ function getFileDependencies(filename) {
         dependencies,
         code
     }
+}
+
+/**
+ * 生成依赖图谱
+ * @param {*} entry 入口文件
+ * @returns dependenceGraph 依赖图谱
+ */
+function createDependenciesGraph(entry) {
+    const entryModule = getFileDependencies(entry)
+    // 存储所有模块
+    const graphArray = [entryModule]
+    for (let i = 0; i < graphArray.length; i++) {
+        const item = graphArray[i]
+        // 获取该文件所有依赖的模块集合（键值对存储）
+        const {dependencies} = item
+        for (let j in dependencies) {
+            graphArray.push(getFileDependencies(dependencies[j]))
+        }
+    }
+    // 生成依赖图谱
+    const dependenceGraph = {}
+    graphArray.forEach(item => {
+        graph[item.filename] = {
+            dependencies: item.dependencies,
+            code: item.code
+        }
+    })
+
+    return dependenceGraph
 }
