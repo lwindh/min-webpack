@@ -214,9 +214,3 @@ const test = new MyPromise((resolve, reject) => {
     reject(1);
   }, 1000);
 }).catch((reason) => console.log("报错" + reason));
-
-console.log(test);
-
-setTimeout(() => {
-  console.log(test);
-}, 2000);
