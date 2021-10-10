@@ -207,6 +207,33 @@ class MyPromise {
       reject(reason);
     });
   }
+
+  static all(promiseList) {
+    return new MyPromise((resolve, reject) => {
+      if (!Array.isArray(promiseList)) {
+        return reject(new TypeError("arguments must be an array"));
+      }
+
+      let resolvedCounter = 0;
+      const promiseNum = promiseList.length;
+      let resolvedValues = [];
+
+      promiseList.forEach((promise) => {
+        MyPromise.resolve(promise).then(
+          (value) => {
+            resolvedCounter++;
+            resolvedValues.push(value);
+            if (resolvedCounter === promiseNum) {
+              return resolve(resolvedValues)
+            }
+          },
+          (reason) => reject(reason)
+        );
+      });
+    });
+  }
+
+  static reace() {}
 }
 
 const test = new MyPromise((resolve, reject) => {
