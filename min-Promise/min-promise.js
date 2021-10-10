@@ -224,7 +224,7 @@ class MyPromise {
             resolvedCounter++;
             resolvedValues.push(value);
             if (resolvedCounter === promiseNum) {
-              return resolve(resolvedValues)
+              return resolve(resolvedValues);
             }
           },
           (reason) => reject(reason)
@@ -233,7 +233,17 @@ class MyPromise {
     });
   }
 
-  static reace() {}
+  static race(promiseList) {
+    return new MyPromise((resolve, reject) => {
+      if (promiseList.length === 0) {
+        return resolve();
+      }
+      promiseList.forEach((promise) => {
+        promise.then(resolve, reject);
+        // Promise.resolve(promise).then(resolve, reject)
+      });
+    });
+  }
 }
 
 const test = new MyPromise((resolve, reject) => {
