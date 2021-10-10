@@ -123,6 +123,25 @@ class MyPromise {
     }
   }
 
+  finally(callback) {
+    return this.then(
+      (value) => {
+        // callback没有参数、
+        // 如果callback返回的是promise，则会等待promise执行
+        return MyPromise.resolve(callback()).then(() => {
+          // finally会保持promise状态和值
+          return value;
+        });
+      },
+      (reason) => {
+        return MyPromise.resolve(callback()).then(() => {
+          // finally会保持promise状态和值
+          throw reason;
+        });
+      }
+    );
+  }
+
   resolvePromise(newPromise, x, resolve, reject) {
     if (newPromise === x) {
       return reject(
@@ -217,6 +236,10 @@ class MyPromise {
       let resolvedCounter = 0;
       const promiseNum = promiseList.length;
       let resolvedValues = [];
+
+      if (promiseList.length === 0) {
+        return resolve();
+      }
 
       promiseList.forEach((promise) => {
         MyPromise.resolve(promise).then(
