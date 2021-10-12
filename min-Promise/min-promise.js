@@ -258,12 +258,52 @@ class MyPromise {
 
   static race(promiseList) {
     return new MyPromise((resolve, reject) => {
+      if (!Array.isArray(promiseList)) {
+        return reject(new TypeError("arguments must be an array"));
+      }
+
       if (promiseList.length === 0) {
         return resolve();
       }
+
       promiseList.forEach((promise) => {
         promise.then(resolve, reject);
         // Promise.resolve(promise).then(resolve, reject)
+      });
+    });
+  }
+
+  static allSettled(promiseList) {
+    return new MyPromise((resolve, reject) => {
+      if (!Array.isArray(promiseList)) {
+        return reject(new TypeError("arguments must be an array"));
+      }
+
+      let resolvedCounter = 0;
+      const promiseNum = promiseList.length;
+      let resolvedValues = [];
+
+      if (promiseNum === 0) {
+        return resolve();
+      }
+
+      promiseList.forEach((promise) => {
+        MyPromise.resolve(promise).then(
+          (value) => {
+            resolvedCounter++;
+            resolvedValues.push(value);
+            if (resolvedCounter == promiseNum) {
+              return resolve(resolvedValues);
+            }
+          },
+          (reason) => {
+            resolvedCounter++;
+            resolvedValues.push(reason);
+            if (resolvedCounter == promiseNum) {
+              return reject(reason);
+            }
+          }
+        );
       });
     });
   }
