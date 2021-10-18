@@ -288,22 +288,21 @@ class MyPromise {
       }
 
       promiseList.forEach((promise) => {
-        MyPromise.resolve(promise).then(
-          (value) => {
-            resolvedCounter++;
-            resolvedValues.push(value);
-            if (resolvedCounter == promiseNum) {
-              return resolve(resolvedValues);
+        MyPromise.resolve(promise)
+          .then(
+            (value) => {
+              resolvedValues.push(value);
+            },
+            (reason) => {
+              resolvedValues.push(reason);
             }
-          },
-          (reason) => {
+          )
+          .finally((val) => {
             resolvedCounter++;
-            resolvedValues.push(reason);
             if (resolvedCounter == promiseNum) {
-              return reject(reason);
+              return reject(val);
             }
-          }
-        );
+          });
       });
     });
   }
