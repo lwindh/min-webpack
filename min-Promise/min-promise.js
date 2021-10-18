@@ -291,16 +291,22 @@ class MyPromise {
         MyPromise.resolve(promise)
           .then(
             (value) => {
-              resolvedValues.push(value);
+              resolvedValues.push({
+                status: "fulfilled",
+                value,
+              });
             },
             (reason) => {
-              resolvedValues.push(reason);
+              resolvedValues.push({
+                status: "rejected",
+                reason,
+              });
             }
           )
-          .finally((val) => {
+          .finally((_) => {
             resolvedCounter++;
             if (resolvedCounter == promiseNum) {
-              return reject(val);
+              return resolve(resolvedValues);
             }
           });
       });
