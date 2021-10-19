@@ -22,5 +22,8 @@
     "@babel/parser": "^7.15.6",
     "@babel/preset-env": "^7.15.6",
     "@babel/traverse": "^7.15.4"
+  },
+  "dependencies": {
+    "babel-template": "^6.26.0"
   }
 }
