@@ -66,3 +66,19 @@ let child = new Children('111')
 console.log(child.name)
 child.say()
 child.play()
+
+// class 继承
+class Animal {
+  constructor(name) {
+      this.name = name
+  } 
+  getName() {
+      return this.name
+  }
+}
+class Dog extends Animal {
+  constructor(name, age) {
+      super(name)
+      this.age = age
+  }
+}
