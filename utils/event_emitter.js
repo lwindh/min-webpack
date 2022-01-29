@@ -6,10 +6,9 @@ class EventEmitter {
   // 实现订阅
   on(type, callback) {
     if (!this.events[type]) {
-      this.events[type] = [callback]
-    } else {
-      this.events[type].push(callback)
+      this.events[type] = []
     }
+    this.events[type].push(callback)
   }
 
   // 取消订阅
@@ -36,22 +35,22 @@ class EventEmitter {
 }
 
 // 使用如下
-const event = new EventEmitter();
+const events = new EventEmitter()
 
 const handle = (...rest) => {
-  console.log(rest);
-};
+  console.log(rest)
+}
 
-event.on("click", handle);
+events.on('click', handle)
 
-event.emit("click", 1, 2, 3, 4);
+events.emit('click', 1, 2, 3, 4)
 
-event.off("click", handle);
+events.off('click', handle)
 
-event.emit("click", 1, 2);
+events.emit('click', 1, 2)
 
-event.once("dbClick", () => {
-  console.log(123456);
-});
-event.emit("dbClick");
-event.emit("dbClick");
+events.once('dbClick', () => {
+  console.log(123456)
+})
+events.emit('dbClick')
+events.emit('dbClick')
