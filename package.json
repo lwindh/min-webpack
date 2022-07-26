@@ -24,6 +24,7 @@
     "@babel/traverse": "^7.15.4"
   },
   "dependencies": {
-    "babel-template": "^6.26.0"
+    "babel-template": "^6.26.0",
+    "rxjs": "^7.5.4"
   }
 }
